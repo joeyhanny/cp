@@ -11,9 +11,9 @@
       </router-link>
       <router-link to="/recipes" @click="select(randomRecipe._id)" class="link">
         <div @click="select(randomRecipe._id)">
-          <p class="link-title">Crowd Favorite</p>
+          <p class="link-title">Featured</p>
           <img class="link-pic" :src="randomRecipe.path" alt="">
-          <p class="link-description">This is our current favorite recipe we use.</p>
+          <p class="link-description">Here's a classic recipe to try.</p>
         </div>
       </router-link>
       <router-link to="/about" class="link">
@@ -63,7 +63,7 @@ export default {
     getRandom() {
       let totalRecipes = this.recipes.length;
       if (totalRecipes == 0) {
-        return {_id: 0, path: "none"};
+        return {_id: 0, path: ""};
       }
 
       let randomInt = Math.floor(Math.random() * totalRecipes);
@@ -111,12 +111,14 @@ export default {
 
   .link-title {
     padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 40px;
   }
 
 
   .link-description {
     padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 30px;
   }
 

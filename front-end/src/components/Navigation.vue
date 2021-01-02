@@ -1,20 +1,30 @@
 <template>
   <div id="menu">
-    <div id="brand">
-      <router-link to="/">
-          <img src="/images/logo.png">
-      </router-link>
+    <div id="menu-left">
+      <div id="brand">
+        <router-link to="/">
+            <img src="/images/logo.png">
+        </router-link>
+      </div>
+      <div id="tabs">
+        <router-link to="/">
+          <p class="menu-item">Home</p>
+        </router-link>
+        <router-link to="/recipes">
+          <p class="menu-item" @click="reloadRecipes()">Recipes</p>
+        </router-link>
+        <router-link to="/about">
+          <p class="menu-item">About</p>
+        </router-link>
+      </div>
     </div>
-    <div id="tabs">
-      <router-link to="/">
-        <p class="menu-item">Home</p>
-      </router-link>
-      <router-link to="/recipes">
-        <p class="menu-item" @click="reloadRecipes()" >Recipes</p>
-      </router-link>
-      <router-link to="/about">
-        <p class="menu-item">About</p>
-      </router-link>
+    <div id="menu-right">
+      <div id="tabs">
+        <router-link to="/user">
+            <span v-if="this.$root.$data.rCurrentUser != ''" class="menu-item">{{fullName}}</span>
+              <span v-else class="menu-item">Log In</span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +39,11 @@
           //location.reload();
         }
       },
+    },
+    computed: {
+      fullName() {
+        return this.$root.$data.rCurrentUser.firstName + " " + this.$root.$data.rCurrentUser.lastName;
+      }
     }
   }
 </script>
@@ -41,6 +56,12 @@
   }
 
   #menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  #menu-left, #menu-right, #menu {
     display: flex;
     flex-wrap: wrap;
     background-color: #041E42;

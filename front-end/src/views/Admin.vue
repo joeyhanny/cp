@@ -1,73 +1,78 @@
 <template>
 <div class="admin">
-  <h1>Admin Page</h1>
-    <div class="heading">
-      <h2>Add a Recipe</h2>
-    </div>
-    <div class="add">
-      <div class="form">
-        <input v-model="title" placeholder="Title">
-        <p></p>
-        <input v-model="ingredientsHeader1" placeholder="Ingredients Header 1">
-        <p></p>
-        <textarea v-model="ingredientsList1" placeholder="Ingredients List 1"></textarea>
-        <p></p>
-        <input v-model="ingredientsHeader2" placeholder="Ingredients Header 2">
-        <p></p>
-        <textarea v-model="ingredientsList2" placeholder="Ingredients List 2"></textarea>
-        <p></p>
-        <textarea v-model="instructionList" placeholder="Instruction List"></textarea>
-        <p></p>
-        <input v-model="citationName" placeholder="Original Website Name">
-        <p></p>
-        <input v-model="citationURL" placeholder="Original Website URL">
-        <p></p>
-        <input type="file" name="photo" @change="fileChanged">
-        <button @click="upload">Upload</button>
+  <div v-if="this.$root.$data.rCurrentUser.role == 'admin'">
+    <h1>Admin Page</h1>
+      <div class="heading">
+        <h2>Add a Recipe</h2>
       </div>
-      <div class="upload" v-if="addRecipe">
-        <h2>{{addRecipe.title}}</h2>
-        <img :src="addRecipe.path" />
-        <p>{{addRecipe.description}}</p>
-      </div>
-    </div>
-
-    <div class="heading">
-      <h2>Edit/Delete a Recipe</h2>
-    </div>
-    <div class="edit">
-      <div class="form">
-        <input v-model="findTitle" placeholder="Search">
-        <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectRecipe(s)">{{s.title}}
-          </div>
+      <div class="add">
+        <div class="form">
+          <input v-model="title" placeholder="Title">
+          <p></p>
+          <input v-model="ingredientsHeader1" placeholder="Ingredients Header 1">
+          <p></p>
+          <textarea v-model="ingredientsList1" placeholder="Ingredients List 1"></textarea>
+          <p></p>
+          <input v-model="ingredientsHeader2" placeholder="Ingredients Header 2">
+          <p></p>
+          <textarea v-model="ingredientsList2" placeholder="Ingredients List 2"></textarea>
+          <p></p>
+          <textarea v-model="instructionList" placeholder="Instruction List"></textarea>
+          <p></p>
+          <input v-model="citationName" placeholder="Original Website Name">
+          <p></p>
+          <input v-model="citationURL" placeholder="Original Website URL">
+          <p></p>
+          <input type="file" name="photo" @change="fileChanged">
+          <button @click="upload">Upload</button>
+        </div>
+        <div class="upload" v-if="addRecipe">
+          <h2>{{addRecipe.title}}</h2>
+          <img :src="addRecipe.path" />
+          <p>{{addRecipe.description}}</p>
         </div>
       </div>
 
-      <div class="upload" v-if="findRecipe">
-        <input v-model="findRecipe.title" placeholder="Title">
-        <p></p>
-        <input v-model="findRecipe.ingredientsHeader1" placeholder="Ingredients Header 1">
-        <p></p>
-        <textarea v-model="findRecipe.ingredientsList1" placeholder="Ingredients List 1"></textarea>
-        <p></p>
-        <input v-model="findRecipe.ingredientsHeader2" placeholder="Ingredients Header 2">
-        <p></p>
-        <textarea v-model="findRecipe.ingredientsList2" placeholder="Ingredients List 2"></textarea>
-        <p></p>
-        <textarea v-model="findRecipe.instructionList" placeholder="Instruction List"></textarea>
-        <p></p>
-        <input v-model="findRecipe.citationName" placeholder="Original Website Name">
-        <p></p>
-        <input v-model="findRecipe.citationURL" placeholder="Original Website URL">
-        <p></p>
-        <img :src="findRecipe.path" />
+      <div class="heading">
+        <h2>Edit/Delete a Recipe</h2>
       </div>
-      <div class="actions" v-if="findRecipe">
-        <button @click="deleteRecipe(findRecipe)">Delete</button>
-        <button @click="editRecipe(findRecipe)">Edit</button>
+      <div class="edit">
+        <div class="form">
+          <input v-model="findTitle" placeholder="Search">
+          <div class="suggestions" v-if="suggestions.length > 0">
+            <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectRecipe(s)">{{s.title}}
+            </div>
+          </div>
+        </div>
+
+        <div class="upload" v-if="findRecipe">
+          <input v-model="findRecipe.title" placeholder="Title">
+          <p></p>
+          <input v-model="findRecipe.ingredientsHeader1" placeholder="Ingredients Header 1">
+          <p></p>
+          <textarea v-model="findRecipe.ingredientsList1" placeholder="Ingredients List 1"></textarea>
+          <p></p>
+          <input v-model="findRecipe.ingredientsHeader2" placeholder="Ingredients Header 2">
+          <p></p>
+          <textarea v-model="findRecipe.ingredientsList2" placeholder="Ingredients List 2"></textarea>
+          <p></p>
+          <textarea v-model="findRecipe.instructionList" placeholder="Instruction List"></textarea>
+          <p></p>
+          <input v-model="findRecipe.citationName" placeholder="Original Website Name">
+          <p></p>
+          <input v-model="findRecipe.citationURL" placeholder="Original Website URL">
+          <p></p>
+          <img :src="findRecipe.path" />
+        </div>
+        <div class="actions" v-if="findRecipe">
+          <button @click="deleteRecipe(findRecipe)">Delete</button>
+          <button @click="editRecipe(findRecipe)">Edit</button>
+        </div>
       </div>
-    </div>
+  </div>
+  <div v-else>
+    <h1>You must be an admin to access this page.</h1>
+  </div>
 </div>
 </template>
 

@@ -5,8 +5,7 @@
       <router-view  />
     </div>
     <div class="footer">
-      <router-link to="/admin">Admin</router-link>
-      <div>GitHub: <a target="_blank" href="https://github.com/joeyhanny/cp4">https://github.com/joeyhanny/cp4</a></div>
+      <div>GitHub: <a target="_blank" href="https://github.com/joeyhanny/cp">https://github.com/joeyhanny/cp</a></div>
     </div>
   </div>
 </template>
@@ -14,6 +13,7 @@
 <script>
 // @ is an alias to /src
 import Navigation from "@/components/Navigation.vue";
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -28,10 +28,21 @@ export default {
   },
   created() {
     this.updateCurrent();
+    this.resumeLogin();
   },
   methods: {
     updateCurrent() {
       this.$root.$data.currentRecipe = '';
+    },
+    async resumeLogin() {
+     try {
+       let response = await axios.get("/api/users");
+       this.$root.$data.rCurrentUser = response.data.user;
+       return true;
+     }
+     catch (error) {
+       console.log(error);
+     }
     }
   }
 };

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require("body-parser");
+const fs = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,6 +14,18 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/recipeBook', {
   useNewUrlParser: true
 });
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+    name: 'session',
+    keys: ['secretValue'],
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
 
 // Configure multer so that it will upload to '../front-end/public/images'
 const multer = require('multer')
@@ -141,6 +154,23 @@ app.get('/api/recipes', async (req, res) => {
 // Delete a recipe
 app.delete('/api/recipe/:id', async (req, res) => {
   try {
+    let recipe = await Recipe.findOne({
+      _id: req.params.id
+    });
+
+    //console.log(recipe);
+    //console.log(recipe.path);
+
+    let path = "..\\front-end\\public" + recipe.path;
+
+    fs.unlink(path, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      //file removed
+    });
+
     await Recipe.deleteOne({
       _id: req.params.id
     });
@@ -184,5 +214,9 @@ app.put('/api/recipe/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// import the users module and setup its API path
+const users = require("./users.js");
+app.use("/api/users", users.routes);
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
