@@ -76,7 +76,8 @@
       }
     },
     computed: {
-      searchedRecipes () {return this.recipes.filter(rec => rec.title.toLowerCase().trim().search(this.searchText.toLowerCase().trim()) >= 0)},
+      searchedRecipes () {return this.recipes.filter(rec => rec.title.toLowerCase().trim().search(this.searchText.toLowerCase().trim()) >= 0)
+                                  .sort((a, b) => (a.title.toLowerCase().trim() > b.title.toLowerCase().trim()) ? 1 : -1)},
       currentRecipe () {return this != null ? this.getCurrentRecipe() : ''}
     },
     created() {
@@ -143,7 +144,7 @@
     width: 100%;
     height: 40px;
   }
-
+  
 
   .recipes {
     margin-left: 45px;

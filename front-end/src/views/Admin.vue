@@ -7,23 +7,33 @@
       </div>
       <div class="add">
         <div class="form">
-          <input v-model="title" placeholder="Title">
-          <p></p>
-          <input v-model="ingredientsHeader1" placeholder="Ingredients Header 1">
-          <p></p>
-          <textarea v-model="ingredientsList1" placeholder="Ingredients List 1"></textarea>
-          <p></p>
-          <input v-model="ingredientsHeader2" placeholder="Ingredients Header 2">
-          <p></p>
-          <textarea v-model="ingredientsList2" placeholder="Ingredients List 2"></textarea>
-          <p></p>
-          <textarea v-model="instructionList" placeholder="Instruction List"></textarea>
-          <p></p>
-          <input v-model="citationName" placeholder="Original Website Name">
-          <p></p>
-          <input v-model="citationURL" placeholder="Original Website URL">
+          <input class="title-input" v-model="title" placeholder="Click to add Title">
           <p></p>
           <input type="file" name="photo" @change="fileChanged">
+          <p></p>
+          <p class="header">Ingredients</p>
+          <div class="ingredients-input">
+            <div class="ingredient-sublist-input">
+              <input class="ingredient-sublist-header-input" v-model="ingredientsHeader1" placeholder=" Add Ingredients Header 1">
+              <p></p>
+              <textarea class="ingredient-sublist-content-input" v-model="ingredientsList1" placeholder="Add Ingredients List 1"></textarea>
+              <p></p>
+            </div>
+            <div class="ingredient-sublist-input">
+              <input class="ingredient-sublist-header-input" v-model="ingredientsHeader2" placeholder="Add Ingredients Header 2">
+              <p></p>
+              <textarea class="ingredient-sublist-content-input" v-model="ingredientsList2" placeholder="Add Ingredients List 2"></textarea>
+              <p></p>
+            </div>
+          </div>
+          <hr>
+          <p class="header">Instructions</p>
+          <textarea class="instructions-input" v-model="instructionList" placeholder="Add Instruction List"></textarea>
+          <p></p>
+          <input v-model="citationName" placeholder="Cite Original Website Name">
+          <p></p>
+          <input v-model="citationURL" placeholder="Cite Original Website URL">
+          <p></p>
           <button @click="upload">Upload</button>
         </div>
         <div class="upload" v-if="addRecipe">
@@ -77,6 +87,63 @@
 </template>
 
 <style scoped>
+
+  .title-input, .header {
+    font-weight: bold;
+    text-align: center;
+    color: #041E42;
+    margin-bottom: 10px;
+  }
+
+  .title-input::placeholder {
+    color: #041E42;
+  }
+
+  .ingredients-input {
+    display: flex;
+    text-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .ingredient-sublist-input {
+    margin: 10px;
+  }
+
+  .ingredient-sublist-header-input {
+    padding-left: 5px;
+  }
+
+  .ingredient-sublist-content-input {
+    padding-left: 5px;
+    padding-top: 5px;
+    min-height: 50px;
+  }
+
+  .header {
+    text-align: left;
+    padding-top: 10px;
+  }
+
+  .instructions-input {
+    width: 100%;
+    min-height: 75px;
+    padding-left: 5px;
+    padding-top: 5px;
+  }
+
+  button {
+    background-color: #041E42;
+    color: white;
+    border-radius: 3px;
+    padding: 5px;
+    margin-right: 5px;
+  }
+
+
+
+
+
+
 
   .admin {
     margin-left: 40px;
@@ -176,8 +243,8 @@
     },
     computed: {
       suggestions() {
-        let recipes = this.recipes.filter(recipe => recipe.title.toLowerCase().includes(this.findTitle.toLowerCase()));
-        return recipes.sort((a, b) => a.title > b.title);
+        let recipes = this.recipes.filter(recipe => recipe.title.toLowerCase().trim().includes(this.findTitle.toLowerCase().trim()));
+        return recipes.sort((a, b) => (a.title.toLowerCase().trim() > b.title.toLowerCase().trim()) ? 1 : -1);
       }
     },
     created() {

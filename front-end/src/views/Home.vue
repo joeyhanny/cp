@@ -5,20 +5,26 @@
       <router-link to="/recipes" @click="select('')" class="link">
         <div  @click="select('')">
           <p class="link-title">Recipes</p>
-          <img class="link-pic" src="/images/katie-smith-uQs1802D0CQ-unsplash.jpg" alt="">
+          <div class="pic-container">
+            <img class="link-pic" src="/images/katie-smith-uQs1802D0CQ-unsplash.jpg" alt="">
+          </div>
           <p class="link-description">Here is a list a recipes that we enjoy.</p>
         </div>
       </router-link>
       <router-link to="/recipes" @click="select(randomRecipe._id)" class="link">
         <div @click="select(randomRecipe._id)">
           <p class="link-title">Featured</p>
-          <img class="link-pic" :src="randomRecipe.path" alt="">
+          <div class="pic-container">
+            <img class="link-pic" :src="randomRecipe.path" alt="">
+          </div>
           <p class="link-description">Here's a classic recipe to try.</p>
         </div>
       </router-link>
       <router-link to="/about" class="link">
         <p class="link-title">About Us</p>
-        <img class="link-pic" src="/images/jed-villejo-bEcC0nyIp2g-unsplash.jpg" alt="">
+        <div class="pic-container">
+          <img class="link-pic" src="/images/couch-potatoes-3119968_1920.jpg" alt="">
+        </div>
         <p class="link-description">This is a little history of this website.</p>
       </router-link>
     </div>
@@ -83,6 +89,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 30px;
   }
 
   .link {
@@ -127,6 +134,10 @@ export default {
     height: auto;
   }
 
+  .pic-container {
+    width: 100%;
+  }
+
   /* Tablet Styles */
 @media only screen and (min-width: 501px) and (max-width: 960px) {
   .recipe-link {
@@ -161,7 +172,13 @@ export default {
   }
 
   .link-pic {
-    height: 40%;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pic-container {
+    height: 300px;
   }
 
   .about-page-img {
@@ -177,7 +194,13 @@ export default {
 /* Larger Tablet Styles */
 @media only screen and (min-width: 775px) and (max-width: 960px) {
     .link-pic {
-      height: 50%;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .pic-container {
+      height: 300px;
     }
 
     .link-description {
@@ -208,8 +231,15 @@ export default {
     border-radius: 10px;
   }
 
+  .pic-container {
+    width: 100%;
+    height: 300px;
+  }
+
   .link-pic {
-    height: 70%;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
   }
 
   .link-title {

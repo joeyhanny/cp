@@ -8,13 +8,13 @@
       </div>
       <div id="tabs">
         <router-link to="/">
-          <p class="menu-item">Home</p>
+          <span class="menu-item">Home</span>
         </router-link>
         <router-link to="/recipes">
-          <p class="menu-item" @click="reloadRecipes()">Recipes</p>
+          <span class="menu-item" @click="reloadRecipes()">Recipes</span>
         </router-link>
         <router-link to="/about">
-          <p class="menu-item">About</p>
+          <span class="menu-item">About</span>
         </router-link>
       </div>
     </div>

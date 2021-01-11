@@ -5,7 +5,9 @@
       <router-view  />
     </div>
     <div class="footer">
-      <div>GitHub: <a target="_blank" href="https://github.com/joeyhanny/cp">https://github.com/joeyhanny/cp</a></div>
+      <div v-if="this.$root.$data.rCurrentUser.role == 'admin'">
+        GitHub: <a target="_blank" href="https://github.com/joeyhanny/cp">https://github.com/joeyhanny/cp</a>
+    </div>
     </div>
   </div>
 </template>
@@ -88,6 +90,10 @@ h2 {
 
 h3 {
   font-size: 25px;
+}
+
+h1, h2, h3, li, p {
+  color: #041E42;
 }
 
 .footer {
