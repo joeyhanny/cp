@@ -30,11 +30,58 @@ app.use(cookieSession({
 // Configure multer so that it will upload to '../front-end/public/images'
 const multer = require('multer')
 const upload = multer({
-  dest: '../front-end/public/images/',
+  //dest: '/var/www/cp.hannyserve.com/images', // For server
+  dest: '../front-end/public/images/', // For local machine to test
   limits: {
     fileSize: 10000000
   }
 });
+
+const tagSchema = new mongoose.Schema({
+  name: String,
+});
+
+const Tag = mongoose.model('Tag', tagSchema);
+
+// Create a tag
+app.post('/api/tags', async (req, res) => {
+  const tag = new Tag({
+    name: req.body.name,
+  });
+
+  try {
+    await tag.save();
+    res.send(tag);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Delete a tag
+app.delete('/api/tag/:id', async (req, res) => {
+  try {
+    await Tag.deleteOne({
+      _id: req.params.id
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Get a list of tags
+app.get('/api/tags', async (req, res) => {
+  try {
+    let tags = await Tag.find();
+    res.send(tags);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 
 // Create a scheme for recipes in the recipe book: a title, a path to an image,
 // an ingrediant list, a list of instruction steps, a citation, and a citation URL
@@ -50,6 +97,7 @@ const recipeSchema = new mongoose.Schema({
   citationURL: String,
   ingrediantsArray: [[[String]]],
   instructionsArray: [String],
+  tags: [String],
 });
 
 // Create a model for recipes in the recipe book.
@@ -67,7 +115,7 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
   });
 });
 
-// Create a new recipe in the recipe book: takes everything in the schem for a recipe abaove (recipeSchema)
+// Create a new recipe in the recipe book: takes everything in the scheme for a recipe abaove (recipeSchema)
 app.post('/api/recipes', async (req, res) => {
   let ingHead1 = req.body.ingredientsHeader1;
   let ingList1 = req.body.ingredientsList1;
@@ -88,6 +136,7 @@ app.post('/api/recipes', async (req, res) => {
     citationURL: req.body.citationURL,
     ingrediantsArray: ingArray,
     instructionsArray: instructArray,
+    tags: req.body.trueTags,
   });
   try {
     await recipe.save();
@@ -161,7 +210,8 @@ app.delete('/api/recipe/:id', async (req, res) => {
     //console.log(recipe);
     //console.log(recipe.path);
 
-    let path = "..\\front-end\\public" + recipe.path;
+    //let path = "/var/www/cp.hannyserve.com" + recipe.path; // For server
+    let path = "..\\front-end\\public" + recipe.path; // For local machine to test
 
     fs.unlink(path, (err) => {
       if (err) {
@@ -205,6 +255,7 @@ app.put('/api/recipe/:id', async (req, res) => {
     recipe.citationURL = req.body.citationURL;
     recipe.ingrediantsArray = ingArray;
     recipe.instructionsArray = instructArray;
+    recipe.tags = req.body.trueTags;
 
     recipe.save();
 
@@ -219,4 +270,5 @@ app.put('/api/recipe/:id', async (req, res) => {
 const users = require("./users.js");
 app.use("/api/users", users.routes);
 
-app.listen(3000, () => console.log('Server listening on port 3000!'));
+// 	app.listen(3002, () => console.log('Server listening on port 3002!')); // For server
+app.listen(3000, () => console.log('Server listening on port 3000!')); // For local machine to test
