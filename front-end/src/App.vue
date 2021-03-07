@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Navigation class="nav"/>
-    <div class="page">
+    <Navigation class="nav" role="header"/>
+    <div class="page" role="main">
       <router-view  />
     </div>
-    <div class="footer">
+    <div class="footer" role="footer">
       <div v-if="this.$root.$data.rCurrentUser.role == 'admin'">
         GitHub: <a target="_blank" href="https://github.com/joeyhanny/cp">https://github.com/joeyhanny/cp</a>
     </div>
@@ -94,6 +94,22 @@ h3 {
 
 h1, h2, h3, li, p {
   color: #041E42;
+}
+
+button {
+  background-color: #041E42;
+  color: white;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 5px;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1em;
 }
 
 .footer {

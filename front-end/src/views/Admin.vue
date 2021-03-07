@@ -9,7 +9,7 @@
       <div class="form">
         <input class="title-input" v-model="title" placeholder="Click to add Title">
         <p></p>
-        <input type="file" name="photo" @change="fileChanged">
+        <input type="file" ref="imageUpload" name="photo" @change="fileChanged">
         <p></p>
         <p class="header">Ingredients</p>
         <div class="ingredients-input">
@@ -320,6 +320,21 @@
       fileChanged(event) {
         this.file = event.target.files[0]
       },
+      clearRecipeInputs(){
+        this.title = "";
+        this.$refs.imageUpload.value = null;
+        this.ingredientsHeader1 = "";
+        this.ingredientsHeader2 = "";
+        this.ingredientsList1 = "";
+        this.ingredientsList2 = "";
+        this.instructionList = "";
+        this.citationName = "";
+        this.citationURL = "";
+
+        for (var tag of this.tagList) {
+          document.getElementById(this.addPrefix + tag.name).checked = false;
+        }
+      },
       async upload() {
         try {
           const formData = new FormData();
@@ -339,6 +354,7 @@
           });
           this.addRecipe = r2.data;
           this.getRecipes();
+          this.clearRecipeInputs();
         } catch (error) {
           console.log(error);
         }

@@ -4,14 +4,15 @@
       <h1>Recipes</h1>
 
       <div class="wrapper">
-        <span class="fieldText">Search by name:</span>
+        <label for="recipeSearch" class="fieldText">Search by name:</label>
         <div class="search">
           <form class="pure-form">
-            <input v-model="searchText" />
+            <input id="recipeSearch" v-model="searchText" />
           </form>
         </div>
       </div>
 
+      <span v-if="tagList.length > 0">* = with substitutions</span>
       <div class="tag-list" @click="getTrueTagChecboxNames()">
         <div class="tag-item" v-for="tag in this.tagList" :key="tag._id">
             <input class="checkbox" type="checkbox" :id="tag.name">
@@ -21,7 +22,7 @@
 
       <div class="recipe-list">
         <div class="recipe-link recipe" @click="select(recipe._id)" v-for="recipe in searchedRecipes" :key="recipe._id">
-          <img class="recipe-img" :src="recipe.path">
+          <img class="recipe-img" :src="recipe.path" alt="">
           <span class="recipe-name">{{recipe.title}}</span>
         </div>
       </div>
@@ -30,7 +31,7 @@
     <div v-else>
       <div v-if="currentRecipe != null">
         <h1>{{currentRecipe.title}}</h1>
-        <img class="recipe-page-img" :src="currentRecipe.path">
+        <img class="recipe-page-img" :src="currentRecipe.path" alt="">
 
         <div class="content-right">
           <div class="ingredient-section">
@@ -65,7 +66,7 @@
               <p>From {{currentRecipe.citationName}}</p>
             </div>
           </div>
-          <button @click="copyURL()">Get link to current recipe.</button>
+          <button @click="copyURL()">Share this recipe.</button>
         </div>
       </div>
       <div v-else>
@@ -121,6 +122,7 @@
       select(recipeID) {
         this.$root.$data.currentRecipe = recipeID;
         this.forceRerender();
+        window.scrollTo(0, 0);
       },
       getCurrentRecipe() {
         for (let recipe of this.recipes) {
